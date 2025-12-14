@@ -264,6 +264,12 @@ hr {
   background-color: #ccc;
   cursor: default;
 }
+
+.pseudo-input {
+  display: block !important;
+}
+
+
 /* efjpejfpjgpojpojg */
 footer {
     margin-top: 2rem;
