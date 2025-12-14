@@ -8,21 +8,26 @@ function renderTrips(trips) {
     const card = document.createElement('div');
     card.className = 'trip-card';
 
-    card.innerHTML = `
-      <h3>🚗 ${trip.driver}</h3>
-      <p>📍 Départ : ${trip.departure}</p>
-      <p>🪑 ${trip.seats_left} / ${trip.seats_total} places disponibles</p>
-       ${
+card.innerHTML = `
+  <h3>🚗 ${trip.driver}</h3>
+  <p>📍 Départ : ${trip.departure}</p>
+  <p>🪑 <span class="seats-left">${trip.seats_left}</span> / ${trip.seats_total} places disponibles</p>
+
+  ${
     trip.seats_left === 0
       ? '<span class="full">Complet</span>'
-      : `<input type="text" placeholder="Ton pseudo" class="pseudo-input"/>
+      : `
+        <input 
+          type="text" 
+          placeholder="Ton pseudo" 
+          class="pseudo-input"
+        />
         <button>Réserver</button>
       `
   }
-    `;
-
+`;
     // Exemple : action sur le bouton réserver
-    if (trip.seats_left > 0) {
+if (trip.seats_left > 0) {
   const button = card.querySelector('button');
   const input = card.querySelector('.pseudo-input');
 
@@ -38,7 +43,6 @@ function renderTrips(trips) {
     alert(`${pseudo}, ta réservation est prise en compte (simulation)`);
   });
 }
-
 
     container.appendChild(card);
   });
