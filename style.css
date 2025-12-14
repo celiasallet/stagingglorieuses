@@ -240,12 +240,15 @@ hr {
 }
 
 
+<<<<<<< HEAD
 #trips-container {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
 }
 
+=======
+>>>>>>> c317fe8 (card trip)
 .trip-card {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -278,16 +281,22 @@ hr {
   border-radius: 4px;
   cursor: pointer;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> c317fe8 (card trip)
 .trip-card button:disabled {
   background-color: #ccc;
   cursor: default;
 }
 
+<<<<<<< HEAD
 .full {
   color: red;
   font-weight: bold;
 }
+=======
+>>>>>>> c317fe8 (card trip)
 footer {
     margin-top: 2rem;
     padding-right: .5rem;

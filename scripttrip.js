@@ -68,3 +68,7 @@ fetch(API_URL)
   .then(res => res.json())
   .then(data => renderTrips(data))
   .catch(err => console.error('Erreur récupération trajets', err));
+<<<<<<< HEAD
+=======
+
+>>>>>>> c317fe8 (card trip)
