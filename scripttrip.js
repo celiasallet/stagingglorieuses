@@ -19,58 +19,52 @@ function renderTrips(trips) {
       ${trip.seats_left === 0 ? 
           '<span class="full">Complet</span>' :
           `<input type="text" placeholder="Prénom" class="passenger-name"/>
-           <button>Réserver</button>`
+          <button>Réserver</button>`
       }
     `;
 
+    // action sur le bouton réserver
     if (trip.seats_left > 0) {
-      const button = card.querySelector('button');
-      const input = card.querySelector('.passenger-name');
+  const button = card.querySelector('button');
+  const input = card.querySelector('.passenger-name');
 
-      button.addEventListener('click', () => {
-        const name = input.value.trim();
-        if (!name) return alert("Veuillez saisir un prénom");
+  button.addEventListener('click', () => {
+    const name = input.value.trim();
+    if (!name) return alert("Veuillez saisir un prénom");
 
-        // Mise à jour côté front immédiatement
-        trip.passengers.push(name);
-        trip.seats_left--;
-        card.querySelector('.seats-left').textContent = trip.seats_left;
-        card.querySelector('.passengers-list').textContent = trip.passengers.join(', ');
+    // Mettre à jour côté front immédiatement
+    trip.passengers.push(name);
+    trip.seats_left--;
+    card.querySelector('.seats-left').textContent = trip.seats_left;
+    card.querySelector('.passengers-list').textContent = trip.passengers.join(', ');
 
-        if (trip.seats_left === 0) {
-          button.remove();
-          input.remove();
-          const full = document.createElement('span');
-          full.className = 'full';
-          full.textContent = 'Complet';
-          card.appendChild(full);
-        }
-
-        // Envoyer la réservation au serveur
-        fetch(API_URL, {  // <-- juste API_URL, pas /reserve
-          method: 'POST',
-          body: JSON.stringify({ tripId: trip.id, passenger: name }),
-          headers: { 'Content-Type': 'application/json' }
-        }).catch(err => console.error('Erreur réservation', err));
-
-        input.value = ''; // vide l’input
-      });
+    if (trip.seats_left === 0) {
+      button.remove();
+      input.remove();
+      const full = document.createElement('span');
+      full.className = 'full';
+      full.textContent = 'Complet';
+      card.appendChild(full);
     }
+
+    // Envoyer la réservation au serveur
+    fetch(`${API_URL}/reserve`, {  // ⚠️ on verra la route Apps Script après
+      method: 'POST',
+      body: JSON.stringify({ tripId: trip.id, passenger: name }),
+      headers: { 'Content-Type': 'application/json' }
+    }).catch(err => console.error('Erreur réservation', err));
+
+    input.value = ''; // vide l’input
+  });
+}
+
 
     container.appendChild(card);
   });
 }
 
-// Fonction pour récupérer les trajets
-function refreshTrips() {
-  fetch(API_URL)
-    .then(res => res.json())
-    .then(data => renderTrips(data))
-    .catch(err => console.error('Erreur récupération trajets', err));
-}
-
-// Récupération initiale
-refreshTrips();
-
-// Rafraîchissement toutes les 10 secondes
-setInterval(refreshTrips, 10000);
+// Fetch des trajets depuis Apps Script
+fetch(API_URL)
+  .then(res => res.json())
+  .then(data => renderTrips(data))
+  .catch(err => console.error('Erreur récupération trajets', err));
