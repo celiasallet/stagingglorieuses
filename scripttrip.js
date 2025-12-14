@@ -1,4 +1,4 @@
-const API_URL = 'COLLE_ICI_TON_URL_WEB_APP';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwLdg-X1eTLb-vedwChQCIogovrPFq5lywCOY21mUBbVdSzAsG44jOdr5c4WwVZncVU/exec';
 
 function renderTrips(trips) {
   const container = document.getElementById('trips-container');
@@ -8,7 +8,17 @@ function renderTrips(trips) {
     const card = document.createElement('div');
     card.className = 'trip-card';
 
-  
+    // on crée une liste pour les passagers
+    if (!trip.passengers) trip.passengers = [];
+
+    card.innerHTML = `
+      <h3>🚗 ${trip.driver}</h3>
+      <p>📍 Départ : ${trip.departure}</p>
+      <p>🪑 <span class="seats-left">${trip.seats_left}</span> / ${trip.seats_total} places disponibles</p>
+      <p>👥 Passagers : <span class="passengers-list">${trip.passengers.join(', ')}</span></p>
+      ${trip.seats_left === 0 ? '<span class="full">Complet</span>' : '<button>Réserver</button>'}
+    `;
+
     // action sur le bouton réserver
     if (trip.seats_left > 0) {
       const button = card.querySelector('button');
