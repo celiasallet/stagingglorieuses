@@ -12,16 +12,33 @@ function renderTrips(trips) {
       <h3>🚗 ${trip.driver}</h3>
       <p>📍 Départ : ${trip.departure}</p>
       <p>🪑 ${trip.seats_left} / ${trip.seats_total} places disponibles</p>
-      ${trip.seats_left === 0 ? '<span class="full">Complet</span>' : '<button>Réserver</button>'}
+       ${
+    trip.seats_left === 0
+      ? '<span class="full">Complet</span>'
+      : `<input type="text" placeholder="Ton pseudo" class="pseudo-input"/>
+        <button>Réserver</button>
+      `
+  }
     `;
 
     // Exemple : action sur le bouton réserver
     if (trip.seats_left > 0) {
-      card.querySelector('button').addEventListener('click', () => {
-        alert(`Tu as réservé une place pour ${trip.driver} !`);
-        // Ici tu peux ajouter un fetch POST pour gérer la réservation côté Apps Script
-      });
+  const button = card.querySelector('button');
+  const input = card.querySelector('.pseudo-input');
+
+  button.addEventListener('click', () => {
+    const pseudo = input.value.trim();
+
+    if (!pseudo) {
+      alert('Merci d’entrer un pseudo');
+      return;
     }
+
+    console.log('Réservation par :', pseudo);
+    alert(`${pseudo}, ta réservation est prise en compte (simulation)`);
+  });
+}
+
 
     container.appendChild(card);
   });
