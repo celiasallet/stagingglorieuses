@@ -1,29 +1,35 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycbxe9qhXXolzVPKWSXeKIf4V5cLxiZK3MR7GH9osZ6toem6iyLu6q5tDqLz9ug0GuQ5W/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwLdg-X1eTLb-vedwChQCIogovrPFq5lywCOY21mUBbVdSzAsG44jOdr5c4WwVZncVU/exec';
 
-const form = document.getElementById('trip-form');
+function renderTrips(trips) {
+  const container = document.getElementById('trips-container');
+  container.innerHTML = ''; // reset container
 
-form.addEventListener('submit', function (e) {
-  e.preventDefault();
+  trips.forEach(trip => {
+    const card = document.createElement('div');
+    card.className = 'trip-card';
 
-  fetch(API_URL, {
-    method: 'POST',
-    body: JSON.stringify({
-      driver: document.getElementById('driver').value,
-      departure: document.getElementById('departure').value,
-      seats_total: document.getElementById('trip-seats').value
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      alert('Trajet ajouté 🚗');
-      form.reset();
-    } else {
-      alert('Erreur : ' + data.error);
+    card.innerHTML = `
+      <h3>🚗 ${trip.driver}</h3>
+      <p>📍 Départ : ${trip.departure}</p>
+      <p>🪑 ${trip.seats_left} / ${trip.seats_total} places disponibles</p>
+      ${trip.seats_left === 0 ? '<span class="full">Complet</span>' : '<button>Réserver</button>'}
+    `;
+
+    // Exemple : action sur le bouton réserver
+    if (trip.seats_left > 0) {
+      card.querySelector('button').addEventListener('click', () => {
+        alert(`Tu as réservé une place pour ${trip.driver} !`);
+        // Ici tu peux ajouter un fetch POST pour gérer la réservation côté Apps Script
+      });
     }
-  })
-  .catch(err => {
-    alert('Erreur réseau');
-    console.error(err);
+
+    container.appendChild(card);
   });
-});
+}
+
+// Fetch des trajets depuis Apps Script
+fetch(API_URL)
+  .then(res => res.json())
+  .then(data => renderTrips(data))
+  .catch(err => console.error('Erreur récupération trajets', err));
+
