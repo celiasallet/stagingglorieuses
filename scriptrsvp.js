@@ -30,6 +30,16 @@ function renderTrips(trips) {
 // Fetch des trajets depuis Apps Script
 fetch(API_URL)
   .then(res => res.json())
-  .then(data => renderTrips(data))
-  .catch(err => console.error('Erreur récupération trajets', err));
+  .then(data => {
+    console.log('Data reçue:', data);
 
+    // Si data.result existe, c'est ton tableau réel
+    const trips = Array.isArray(data) ? data : data.result;
+    if (!Array.isArray(trips)) {
+      console.error('Les données ne sont pas un tableau', trips);
+      return;
+    }
+
+    renderTrips(trips);
+  })
+  .catch(err => console.error('Erreur récupération trajets', err));
