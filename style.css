@@ -278,6 +278,7 @@ hr {
   border-radius: 4px;
   cursor: pointer;
 }
+
 .trip-card button:disabled {
   background-color: #ccc;
   cursor: default;
