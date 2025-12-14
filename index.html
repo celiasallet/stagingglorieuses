@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>30 ans — Soirée d'anniversaire</title>
+        <link rel="icon" href="favicon.png" type="image/png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+    </head>
+    <body>
+        <div class="infos">
+            <div class="flex">
+                <section class="hero card">
+                    <img id="hero-img" src="manonromain.png" alt="Bannière fête 30 ans">
+                </section>
+                <hgroup class=" intro card">
+                    <h1 class="h1">À nos trente glorieuses !</h1>
+                    <h3>Du Samedi 24 Janvier 2026 — 18h Au Dimanche 25 — 16h</h3>
+                    <p>On veut réunir tous les copains et la famille : amis de toujours, potes de soirées, rencontres improvisées, collègues devenus amis, amis devenus famille, et la famille de l’un devenue celle de l’autre.
+                        <br>Viens pour une petite sauterie avec nous !</p>
+                </hgroup>
+            </div>
+            <section class="programme card">
+                <h2 class="h2">Au programme</h2>
+                <p>Arrivée le samedi pour une belle soirée & auberge espagnol ! Tout le monde dort sur place, alors pensez à prévoir matelas gonflable et duvet — il y aura de la place pour tous. <br>Le dimanche, on se retrouve autour d’un brunch convivial (graines bio, “café de chez le torréfacteur”… ou Doowap premier prix) & ptit clean avant un départ tranquille dans la journée ! </p> 
+            </section>
+            <section class="flex">
+                <div class="adresse card">
+                    <div id="map" class="map ratio ratio-16x9">
+                        <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2127.619753758544!2d3.279755004728285!3d48.9688950239572!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e8c18ea3d69e6f%3A0xa22fb57461d93128!2sGuinguette%20le%20BAC!5e0!3m2!1sfr!2sfr!4v1765627563982!5m2!1sfr!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <hgroup>
+                        <h2 class="h2">La fête c'est par lààà !</h2>
+                        <p>Guinguette le BAC<br>Chemin du halage <br>02310 Charly-sur-Marne</p>
+                    </hgroup> 
+                    <hr>
+                    <ul>
+                        <li><strong>En voiture :</strong> via l’A4, comptez environ <strong>1h15 depuis Paris</strong>. Le parking sur place est limité, le co-voiturage ou les transports en commun sont donc recommandés.</li>
+                        <li><strong>À vélo :</strong> via la piste cyclable de l’Ourcq, environ <strong>4h30 de trajet</strong> depuis Paris.</li>
+                        <li><strong>En train / transports en commun :</strong> la gare la plus proche est <strong>Nogent-l’Artaud – Charly (Transilien, depuis Paris-Est)</strong> <br>Marcher : environ <strong>45 min</strong>,
+                            <strong>ou prendre le bus 549 :</strong> jusqu’à l’arrêt <strong>CHARLY S/M – Poste Rue E. Morlot</strong> et marcher <strong>15 min</strong>. 
+                        </li>
+                    </ul>
+                </div>
+                <div class="inscription card">
+                    <hgroup>
+                        <h2 class="h2">On a trop envie que tout le monde soit là... <br>Allez, dis OUI !</h2>
+                        <p>Remplis le formulaire avant le 30 décembre pour nous dire si tu viens... ou pas... Chaque réponse compte ♥</p>
+                    </hgroup>
+                    <form id="rsvp-form" method="POST" action="https://docs.google.com/forms/d/e/1FAIpQLScvNYW8HwRz36Bzc4vJupIhv_yp2PNMVEl0ZMhLbmCzKVrITg/formResponse" target="hidden_iframe" onsubmit="submitted=true;">
+                        <input type="hidden" name="entry.1086372451" id="entry_1086372451" placeholder="Prénom">
+                        <input type="hidden" name="entry.1886974586" id="entry_1886974586" placeholder="Nom">
+                        <input type="hidden" name="entry.1960753079" id="entry_1960753079" value="Oui, je viens !">
+                        <input type="hidden" name="fvv" value="1">
+                        <input type="hidden" name="pageHistory" value="0">
+                        <input type="hidden" name="fbzx" value="0">
+
+                        <div class="mb-4">
+                            <input type="text" class="form-control" placeholder="Prénom" oninput="document.getElementById('entry_1086372451').value=this.value" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="text" class="form-control" placeholder="Nom" oninput="document.getElementById('entry_1886974586').value=this.value" required>
+                        </div>
+                        <div class="mb-4">
+                            <div class="form-check">
+                            <input class="form-check-input" type="radio" name="presence_radio"
+                                onclick="document.getElementById('entry_1960753079').value='Oui, je viens !'"
+                                id="rsvp-yes" checked>
+                            <label class="form-check-label" for="rsvp-yes">Oui, je viens !</label>
+                            </div>
+                            <div class="form-check">
+                            <input class="form-check-input" type="radio" name="presence_radio"
+                                onclick="document.getElementById('entry_1960753079').value='Non, je ne peux pas venir'"
+                                id="rsvp-no">
+                            <label class="form-check-label" for="rsvp-no">Non, je ne peux pas venir</label>
+                            </div>
+                        </div>
+                            <button class="btn btn-primary" type="submit">Envoyer</button>
+                    </form>
+
+                    <iframe name="hidden_iframe" style="display:none;"></iframe>
+
+                    <div id="thankyou-popup">
+                        <div class="popup-content">
+                            <span class="close-btn">&times;</span>
+                            Merci de ta réponse, c'est noté !
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section card">
+                <hgroup>
+                        <h2 class="h2">Co-voiturage</h2>
+                        <p>Propose un trajet ou réserve une place (A/R) direction la guinguette le BAC !</p>
+                        <br>
+                        <p class="subsub">* Pour des raisons de sécurité ne soit pas trop precis sur ton adresse, et partage plus d'infos à tes BlaBlaFriends dans un second temps.</p>
+                </hgroup>
+                <form id="trip-form">
+                    <div class="mb-2">
+                        <label class="form-label">Tu es ?</label>
+                        <input type="text" id="driver" class="form-control" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Départ :</label>
+                        <input type="text" id="departure" class="form-control" placeholder="Rue de la Roquette, vers 15h" required>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Nombre de places disponibles :</label>
+                        <input type="number" id="trip-seats" min="1" class="form-control" value="3" required>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">
+                        Proposer un trajet
+                    </button>
+                    </form>
+            <script src="scripttrip.js"></script>
+            </section>
+        </div>
+        <footer class="text-end">
+            Website by CC
+        </footer>
+    </body>
+    <script src="script.js"></script>
+
+</html>
