@@ -16,31 +16,44 @@ function renderTrips(trips) {
       <p>📍 Départ : ${trip.departure}</p>
       <p>🪑 <span class="seats-left">${trip.seats_left}</span> / ${trip.seats_total} places disponibles</p>
       <p>👥 Passagers : <span class="passengers-list">${trip.passengers.join(', ')}</span></p>
-      ${trip.seats_left === 0 ? '<span class="full">Complet</span>' : '<button>Réserver</button>'}
+      ${trip.seats_left === 0 ? 
+          '<span class="full">Complet</span>' :
+          `<input type="text" placeholder="Prénom" class="passenger-name"/>
+           <button>Réserver</button>`
+      }
     `;
 
-    // action sur le bouton réserver
     if (trip.seats_left > 0) {
       const button = card.querySelector('button');
+      const input = card.querySelector('.passenger-name');
+
       button.addEventListener('click', () => {
-        const name = prompt("Entrez votre prénom pour réserver :");
-        if (!name) return;
+        const name = input.value.trim();
+        if (!name) return alert("Veuillez saisir un prénom");
 
-        trip.passengers.push(name);         // ajoute le passager
-        trip.seats_left--;                  // décrémente les places
-
-        // met à jour le DOM
+        // Mise à jour côté front immédiatement
+        trip.passengers.push(name);
+        trip.seats_left--;
         card.querySelector('.seats-left').textContent = trip.seats_left;
         card.querySelector('.passengers-list').textContent = trip.passengers.join(', ');
 
-        // si plus de places, désactive le bouton
         if (trip.seats_left === 0) {
           button.remove();
+          input.remove();
           const full = document.createElement('span');
           full.className = 'full';
           full.textContent = 'Complet';
           card.appendChild(full);
         }
+
+        // Envoyer la réservation au serveur
+        fetch(API_URL, {  // <-- juste API_URL, pas /reserve
+          method: 'POST',
+          body: JSON.stringify({ tripId: trip.id, passenger: name }),
+          headers: { 'Content-Type': 'application/json' }
+        }).catch(err => console.error('Erreur réservation', err));
+
+        input.value = ''; // vide l’input
       });
     }
 
@@ -48,8 +61,16 @@ function renderTrips(trips) {
   });
 }
 
-// Fetch des trajets depuis Apps Script
-fetch(API_URL)
-  .then(res => res.json())
-  .then(data => renderTrips(data))
-  .catch(err => console.error('Erreur récupération trajets', err));
+// Fonction pour récupérer les trajets
+function refreshTrips() {
+  fetch(API_URL)
+    .then(res => res.json())
+    .then(data => renderTrips(data))
+    .catch(err => console.error('Erreur récupération trajets', err));
+}
+
+// Récupération initiale
+refreshTrips();
+
+// Rafraîchissement toutes les 10 secondes
+setInterval(refreshTrips, 10000);
