@@ -8,10 +8,20 @@ function renderTrips(trips) {
 
 		// Contenu de base
 		card.innerHTML = `
-			<h3>🚗 ${trip.driver}</h3>
-			<p>📍 Départ : ${trip.departure}</p>
-			<p>🪑 <span class="seats-left">${trip.seats_left}</span> / ${trip.seats_total} places disponibles</p>
-		`;
+      <h3>🚗 ${trip.driver}</h3>
+      <p>📍 Départ : ${trip.departure}</p>
+      <p>
+        🪑 <span class="seats-left">${trip.seats_left}</span>
+        / ${trip.seats_total} places disponibles
+      </p>
+    `;
+
+		// Affiche le pseudo déjà réservé s'il existe
+		if (trip.pseudo && trip.pseudo.trim() !== "") {
+			const pseudoSpan = document.createElement('p');
+			pseudoSpan.textContent = `Réservé par : ${trip.pseudo}`;
+			card.appendChild(pseudoSpan);
+		}
 
 		if (trip.seats_left === 0) {
 			const full = document.createElement('span');
@@ -38,7 +48,6 @@ function renderTrips(trips) {
 					return;
 				}
 
-				// Envoi de la réservation à l'API
 				fetch(API_URL, {
 					method: 'POST',
 					body: JSON.stringify({
@@ -47,50 +56,47 @@ function renderTrips(trips) {
 						pseudo: pseudo
 					})
 				})
-				.then(res => res.json())
-				.then(data => {
-					if (data.success) {
-						alert(`${pseudo} a réservé une place !`);
+					.then(res => res.json())
+					.then(data => {
+						if (data.success) {
+							alert(`${pseudo} a réservé une place !`);
 
-						// --- Mise à jour visuelle ---
-						const seatsSpan = card.querySelector('.seats-left');
-						let seatsLeft = Number(seatsSpan.textContent);
-						seatsLeft = seatsLeft - 1;
-						seatsSpan.textContent = seatsLeft;
+							// --- Mise à jour visuelle ---
+							const seatsSpan = card.querySelector('.seats-left');
+							let seatsLeft = Number(seatsSpan.textContent);
+							seatsLeft = seatsLeft - 1;
+							seatsSpan.textContent = seatsLeft;
 
-						// Affiche le pseudo dans la carte
-						let pseudoEl = card.querySelector('.reserved-by');
-						if (!pseudoEl) {
-							pseudoEl = document.createElement('p');
-							pseudoEl.className = 'reserved-by';
-							card.appendChild(pseudoEl);
+							// Affiche le pseudo dans la carte
+							const pseudoSpan = document.createElement('p');
+							pseudoSpan.textContent = `Réservé par : ${pseudo}`;
+							card.appendChild(pseudoSpan);
+
+							if (seatsLeft === 0) {
+								// Remplace input + bouton par "Complet"
+								input.remove();
+								button.remove();
+								const full = document.createElement('span');
+								full.className = 'full';
+								full.textContent = 'Complet';
+								card.appendChild(full);
+							}
+
+						} else {
+							alert('Erreur : ' + data.error);
 						}
-						pseudoEl.textContent = `Réservé par : ${pseudo}`;
-
-						// Si plus de places, remplace input + bouton par "Complet"
-						if (seatsLeft === 0) {
-							input.remove();
-							button.remove();
-							const full = document.createElement('span');
-							full.className = 'full';
-							full.textContent = 'Complet';
-							card.appendChild(full);
-						}
-
-					} else {
-						alert('Erreur : ' + data.error);
-					}
-				})
-				.catch(err => {
-					console.error(err);
-					alert('Erreur lors de la réservation');
-				});
+					})
+					.catch(err => {
+						console.error(err);
+						alert('Erreur lors de la réservation');
+					});
 			});
 		}
 
 		container.appendChild(card);
 	});
 }
+
 
 console.log('RSVP script chargé');
 
