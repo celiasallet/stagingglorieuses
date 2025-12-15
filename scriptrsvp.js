@@ -52,10 +52,13 @@ function renderTrips(trips) {
   });
 }
 
+console.log('RSVP script chargé');
+
 fetch(API_URL)
-    .then(res => res.json())
-    .then(data => {
-      const trips = Array.isArray(data) ? data : data.result;
-      renderTrips(trips);
-    })
-    .catch(err => console.error('Erreur récupération trajets', err));
+  .then(res => res.json())
+  .then(data => {
+    console.log('DATA:', data);
+    const trips = Array.isArray(data) ? data : data.result;
+    renderTrips(trips);
+  })
+  .catch(err => console.error('Erreur récupération trajets', err));
