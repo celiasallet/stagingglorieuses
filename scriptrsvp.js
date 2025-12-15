@@ -101,6 +101,7 @@ function renderTrips(trips) {
 
 
 console.log('RSVP script chargé');
+//test
 
 // Récupération des trajets depuis l'API
 fetch(API_URL)
