@@ -90,24 +90,52 @@ console.log('RSVP script chargé');
 fetch(API_URL)
   .then(res => res.json())
   .then(data => {
-    // Filtre uniquement les trajets valides
-    const tripsData = (Array.isArray(data) ? data : data.result)
-      .filter(trip => !isNaN(Number(trip.seats_total)) && !isNaN(Number(trip.seats_left)));
+    // data = toutes les lignes (trajets + réservations)
+    const tripsMap = {};
 
-    // On sépare trajets et réservations
-    const trips = tripsData.filter(t => t.seats_total > 1); // trajets principaux
-    const reservations = tripsData.filter(t => t.seats_total === 1 && t.pseudo); // réservations
-
-    // Pour chaque trajet, on récupère les pseudos
-    trips.forEach(trip => {
-      trip.reservedPseudos = reservations
-        .filter(r => r.driver === trip.driver && r.departure === trip.departure)
-        .map(r => r.pseudo);
+    data.forEach(row => {
+      const tripId = row.id;
+      if (!tripsMap[tripId]) {
+        tripsMap[tripId] = {
+          id: tripId,
+          driver: row.driver,
+          departure: row.departure,
+          seats_total: row.seats_total,
+          seats_left: row.seats_left,
+          reservedPseudos: []
+        };
+      }
+      if (row.pseudo && row.pseudo.trim() !== "") {
+        tripsMap[tripId].reservedPseudos.push(row.pseudo);
+      }
     });
 
+    const trips = Object.values(tripsMap);
     renderTrips(trips);
-  })
-  .catch(err => console.error('Erreur récupération trajets', err));
+  });
+
+
+// fetch(API_URL)
+//   .then(res => res.json())
+//   .then(data => {
+//     // Filtre uniquement les trajets valides
+//     const tripsData = (Array.isArray(data) ? data : data.result)
+//       .filter(trip => !isNaN(Number(trip.seats_total)) && !isNaN(Number(trip.seats_left)));
+
+//     // On sépare trajets et réservations
+//     const trips = tripsData.filter(t => t.seats_total > 1); // trajets principaux
+//     const reservations = tripsData.filter(t => t.seats_total === 1 && t.pseudo); // réservations
+
+//     // Pour chaque trajet, on récupère les pseudos
+//     trips.forEach(trip => {
+//       trip.reservedPseudos = reservations
+//         .filter(r => r.driver === trip.driver && r.departure === trip.departure)
+//         .map(r => r.pseudo);
+//     });
+
+//     renderTrips(trips);
+//   })
+//   .catch(err => console.error('Erreur récupération trajets', err));
 
 
 // fetch(API_URL)
