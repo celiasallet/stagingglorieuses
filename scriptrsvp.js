@@ -49,12 +49,14 @@ function renderTrips(trips) {
 				}
 
 				fetch(API_URL, {
-					method: 'POST',
-					body: JSON.stringify({
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
 					action: 'reserve',
 					trip_id: trip.id,
 					pseudo: pseudo
-					})
+				})
+
 				})
 					.then(res => res.json())
 					.then(data => {
