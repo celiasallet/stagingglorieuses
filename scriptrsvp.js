@@ -7,19 +7,13 @@ function renderTrips(trips) {
     card.className = 'trip-card';
 
     // Contenu de base
-    card.innerHTML = `
-      <h3>🚗 ${trip.driver}</h3>
-      <p>📍 Départ : ${trip.departure}</p>
-      <p>🪑 <span class="seats-left">${trip.seats_left}</span> / ${trip.seats_total} places disponibles</p>
-    `;
+   card.innerHTML = `
+  <h3>🚗 ${trip.driver}</h3>
+  <p>📍 Départ : ${trip.departure}</p>
+  <p>🪑 <span class="seats-left">${trip.seats_left}</span> / ${trip.seats_total} places disponibles</p>
+  ${trip.reservedPseudos && trip.reservedPseudos.length > 0 ? `<p class="reserved-list">Réservé par : ${trip.reservedPseudos.join(', ')}</p>` : ''}
+`;
 	
-	// Après le contenu de base
-	if(trip.reservedPseudos && trip.reservedPseudos.length > 0){
-  const reservedList = document.createElement('p');
-  reservedList.className = 'reserved-list';
-  reservedList.textContent = 'Réservé par : ' + trip.reservedPseudos.join(', ');
-  card.appendChild(reservedList);
-}
 
 //////
     if (trip.seats_left === 0) {
@@ -91,12 +85,12 @@ console.log('RSVP script chargé');
 fetch(API_URL)
   .then(res => res.json())
   .then(data => {
-    // séparer trajets principaux et réservations
+    // Filtre trajets principaux et réservations
     const tripsData = data.filter(row => !isNaN(Number(row.seats_total)) && !isNaN(Number(row.seats_left)));
     const trips = tripsData.filter(t => t.seats_total > 1);
     const reservations = tripsData.filter(t => t.seats_total === 1 && t.pseudo);
 
-    // ajouter reservedPseudos à chaque trajet
+    // Ajoute reservedPseudos à chaque trajet
     trips.forEach(trip => {
       trip.reservedPseudos = reservations
         .filter(r => r.driver === trip.driver && r.departure === trip.departure)
@@ -104,8 +98,8 @@ fetch(API_URL)
     });
 
     renderTrips(trips);
-  });
-
+  })
+  .catch(err => console.error('Erreur récupération trajets', err));
 
 // fetch(API_URL)
 //   .then(res => res.json())
