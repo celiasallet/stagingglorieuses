@@ -4,6 +4,7 @@ const popup = document.getElementById('thankyou-popup');
 const closeBtn = popup.querySelector('.close-btn');
 
     form.addEventListener('submit', function() {
+        e.preventDefault(); 
         popup.style.display = "flex";
 
         const btn = form.querySelector('button[type="submit"]');
