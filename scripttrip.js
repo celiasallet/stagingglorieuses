@@ -5,11 +5,20 @@ const tripForm = document.getElementById('trip-form');
 tripForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
+    const driverInput = document.getElementById('driver').value.trim();
+    const departureInput = document.getElementById('departure').value.trim();
+    const seatsInput = parseInt(document.getElementById('trip-seats').value, 10);
+
+    if (!driverInput || !departureInput || isNaN(seatsInput) || seatsInput <= 0) {
+        alert("Merci de remplir tous les champs correctement !");
+        return;
+    }
+
     const tripData = {
-        driver: document.getElementById('driver').value,
-        departure: document.getElementById('departure').value,    
-        seats_total: parseInt(document.getElementById('trip-seats').value, 10), 
-        seats_left: parseInt(document.getElementById('trip-seats').value, 10) 
+        driver: driverInput,
+        departure: departureInput,
+        seats_total: seatsInput,
+        seats_left: seatsInput
     };
 
     fetch(API_URL, {
