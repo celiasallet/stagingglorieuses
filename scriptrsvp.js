@@ -82,7 +82,7 @@ function renderTrips(trips) {
 
 console.log('RSVP script chargé');
 
-fetch(API_URL)
+fetch(API_URL) 
   .then(res => res.json())
   .then(data => {
     // Filtre trajets principaux et réservations. changer jusqua render
