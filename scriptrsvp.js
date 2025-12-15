@@ -13,7 +13,7 @@ function renderTrips(trips) {
       <p>🪑 <span class="seats-left">${trip.seats_left}</span> / ${trip.seats_total} places disponibles</p>
     `;
 
-		// Affiche le pseudo déjà réservé s'il existe
+		// Affiche le pseudo déjà réservé s'il exist
 		if (trip.pseudo && trip.pseudo.trim() !== "") {
 			const pseudoSpan = document.createElement('p');
 			pseudoSpan.textContent = `Réservé par : ${trip.pseudo}`;

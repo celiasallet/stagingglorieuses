@@ -32,5 +32,5 @@ tripForm.addEventListener('submit', function (e) {
 });
 
 
-//////////////
+/////////////
 
