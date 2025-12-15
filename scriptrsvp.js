@@ -85,19 +85,19 @@ console.log('RSVP script chargé');
 fetch(API_URL)
   .then(res => res.json())
   .then(data => {
-    // Filtre trajets principaux et réservations
+    // Filtre trajets principaux et réservations. changer jusqua render
     const tripsData = data.filter(row => !isNaN(Number(row.seats_total)) && !isNaN(Number(row.seats_left)));
-    const trips = tripsData.filter(t => t.seats_total > 1);
-    const reservations = tripsData.filter(t => t.seats_total === 1 && t.pseudo);
 
-    // Ajoute reservedPseudos à chaque trajet
-    trips.forEach(trip => {
-      trip.reservedPseudos = reservations
-        .filter(r => r.driver === trip.driver && r.departure === trip.departure)
-        .map(r => r.pseudo);
-    });
+const mainTrips = tripsData.filter(t => t.seats_total > 1); // trajets principaux
+const reservations = tripsData.filter(t => t.seats_total === 1 && t.pseudo);
 
-    renderTrips(trips);
+mainTrips.forEach(trip => {
+  trip.reservedPseudos = reservations
+    .filter(r => r.parent_id === trip.id)
+    .map(r => r.pseudo);
+});
+
+renderTrips(mainTrips);
   })
   .catch(err => console.error('Erreur récupération trajets', err));
 
