@@ -36,33 +36,51 @@ form.addEventListener('submit', function (e) {
 
 function renderTrips(trips) {
   const container = document.getElementById('trips-container');
-  container.innerHTML = ''; // reset container
+  container.innerHTML = '';
 
   trips.forEach(trip => {
     const card = document.createElement('div');
     card.className = 'trip-card';
 
+    // Contenu de base
     card.innerHTML = `
       <h3>🚗 ${trip.driver}</h3>
       <p>📍 Départ : ${trip.departure}</p>
-      <p>🪑 ${trip.seats_left} / ${trip.seats_total} places disponibles</p>
-      ${trip.seats_left === 0 ? '<span class="full">Complet</span>' : '<button>Réserver</button>'}
+      <p>
+        🪑 <span class="seats-left">${trip.seats_left}</span>
+        / ${trip.seats_total} places disponibles
+      </p>
     `;
 
-    // Exemple : action sur le bouton réserver
-    if (trip.seats_left > 0) {
-      card.querySelector('button').addEventListener('click', () => {
-        alert(`Tu as réservé une place pour ${trip.driver} !`);
-        // Ici tu peux ajouter un fetch POST pour gérer la réservation côté Apps Script
+    if (trip.seats_left === 0) {
+      const full = document.createElement('span');
+      full.className = 'full';
+      full.textContent = 'Complet';
+      card.appendChild(full);
+    } else {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Ton pseudo';
+      input.className = 'pseudo-input';
+
+      const button = document.createElement('button');
+      button.textContent = 'Réserver';
+
+      card.appendChild(input);
+      card.appendChild(button);
+
+      button.addEventListener('click', () => {
+        const pseudo = input.value.trim();
+
+        if (!pseudo) {
+          alert('Merci d’entrer un pseudo');
+          return;
+        }
+
+        alert(`${pseudo} a réservé une place avec ${trip.driver} (simulation)`);
       });
     }
 
     container.appendChild(card);
   });
 }
-
-// Fetch des trajets depuis Apps Script
-fetch(API_URL)
-  .then(res => res.json())
-  .then(data => renderTrips(data))
-  .catch(err => console.error('Erreur récupération trajets', err));
