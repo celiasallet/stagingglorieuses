@@ -15,11 +15,12 @@ function renderTrips(trips) {
 	
 	// Après le contenu de base
 	if(trip.reservedPseudos && trip.reservedPseudos.length > 0){
-	const reservedList = document.createElement('p');
-	reservedList.className = 'reserved-list';
-	reservedList.textContent = 'Réservé par : ' + trip.reservedPseudos.join(', ');
-	card.appendChild(reservedList);
-	}
+  const reservedList = document.createElement('p');
+  reservedList.className = 'reserved-list';
+  reservedList.textContent = 'Réservé par : ' + trip.reservedPseudos.join(', ');
+  card.appendChild(reservedList);
+}
+
 //////
     if (trip.seats_left === 0) {
       const full = document.createElement('span');
@@ -90,27 +91,18 @@ console.log('RSVP script chargé');
 fetch(API_URL)
   .then(res => res.json())
   .then(data => {
-    // data = toutes les lignes (trajets + réservations)
-    const tripsMap = {};
+    // séparer trajets principaux et réservations
+    const tripsData = data.filter(row => !isNaN(Number(row.seats_total)) && !isNaN(Number(row.seats_left)));
+    const trips = tripsData.filter(t => t.seats_total > 1);
+    const reservations = tripsData.filter(t => t.seats_total === 1 && t.pseudo);
 
-    data.forEach(row => {
-      const tripId = row.id;
-      if (!tripsMap[tripId]) {
-        tripsMap[tripId] = {
-          id: tripId,
-          driver: row.driver,
-          departure: row.departure,
-          seats_total: row.seats_total,
-          seats_left: row.seats_left,
-          reservedPseudos: []
-        };
-      }
-      if (row.pseudo && row.pseudo.trim() !== "") {
-        tripsMap[tripId].reservedPseudos.push(row.pseudo);
-      }
+    // ajouter reservedPseudos à chaque trajet
+    trips.forEach(trip => {
+      trip.reservedPseudos = reservations
+        .filter(r => r.driver === trip.driver && r.departure === trip.departure)
+        .map(r => r.pseudo);
     });
 
-    const trips = Object.values(tripsMap);
     renderTrips(trips);
   });
 
