@@ -1,5 +1,3 @@
-
-
 function renderTrips(trips) {
 	const container = document.getElementById('trips-container');
 	container.innerHTML = '';
@@ -10,13 +8,10 @@ function renderTrips(trips) {
 
 		// Contenu de base
 		card.innerHTML = `
-      <h3>🚗 ${trip.driver}</h3>
-      <p>📍 Départ : ${trip.departure}</p>
-      <p>
-        🪑 <span class="seats-left">${trip.seats_left}</span>
-        / ${trip.seats_total} places disponibles
-      </p>
-    `;
+			<h3>🚗 ${trip.driver}</h3>
+			<p>📍 Départ : ${trip.departure}</p>
+			<p>🪑 <span class="seats-left">${trip.seats_left}</span> / ${trip.seats_total} places disponibles</p>
+		`;
 
 		if (trip.seats_left === 0) {
 			const full = document.createElement('span');
@@ -43,6 +38,7 @@ function renderTrips(trips) {
 					return;
 				}
 
+				// Envoi de la réservation à l'API
 				fetch(API_URL, {
 					method: 'POST',
 					body: JSON.stringify({
@@ -51,35 +47,44 @@ function renderTrips(trips) {
 						pseudo: pseudo
 					})
 				})
-					.then(res => res.json())
-					.then(data => {
-						if (data.success) {
-							alert(`${pseudo} a réservé une place !`);
+				.then(res => res.json())
+				.then(data => {
+					if (data.success) {
+						alert(`${pseudo} a réservé une place !`);
 
-							// --- Mise à jour visuelle ---
-							const seatsSpan = card.querySelector('.seats-left');
-							let seatsLeft = Number(seatsSpan.textContent);
-							seatsLeft = seatsLeft - 1;
-							seatsSpan.textContent = seatsLeft;
+						// --- Mise à jour visuelle ---
+						const seatsSpan = card.querySelector('.seats-left');
+						let seatsLeft = Number(seatsSpan.textContent);
+						seatsLeft = seatsLeft - 1;
+						seatsSpan.textContent = seatsLeft;
 
-							if (seatsLeft === 0) {
-								// Remplace input + bouton par "Complet"
-								input.remove();
-								button.remove();
-								const full = document.createElement('span');
-								full.className = 'full';
-								full.textContent = 'Complet';
-								card.appendChild(full);
-							}
-
-						} else {
-							alert('Erreur : ' + data.error);
+						// Affiche le pseudo dans la carte
+						let pseudoEl = card.querySelector('.reserved-by');
+						if (!pseudoEl) {
+							pseudoEl = document.createElement('p');
+							pseudoEl.className = 'reserved-by';
+							card.appendChild(pseudoEl);
 						}
-					})
-					.catch(err => {
-						console.error(err);
-						alert('Erreur lors de la réservation');
-					});
+						pseudoEl.textContent = `Réservé par : ${pseudo}`;
+
+						// Si plus de places, remplace input + bouton par "Complet"
+						if (seatsLeft === 0) {
+							input.remove();
+							button.remove();
+							const full = document.createElement('span');
+							full.className = 'full';
+							full.textContent = 'Complet';
+							card.appendChild(full);
+						}
+
+					} else {
+						alert('Erreur : ' + data.error);
+					}
+				})
+				.catch(err => {
+					console.error(err);
+					alert('Erreur lors de la réservation');
+				});
 			});
 		}
 
@@ -89,6 +94,7 @@ function renderTrips(trips) {
 
 console.log('RSVP script chargé');
 
+// Récupération des trajets depuis l'API
 fetch(API_URL)
 	.then(res => res.json())
 	.then(data => {
@@ -97,4 +103,103 @@ fetch(API_URL)
 		renderTrips(trips);
 	})
 	.catch(err => console.error('Erreur récupération trajets', err));
+
+
+// function renderTrips(trips) {
+// 	const container = document.getElementById('trips-container');
+// 	container.innerHTML = '';
+
+// 	trips.forEach(trip => {
+// 		const card = document.createElement('div');
+// 		card.className = 'trip-card';
+
+// 		// Contenu de base
+// 		card.innerHTML = `
+//       <h3>🚗 ${trip.driver}</h3>
+//       <p>📍 Départ : ${trip.departure}</p>
+//       <p>
+//         🪑 <span class="seats-left">${trip.seats_left}</span>
+//         / ${trip.seats_total} places disponibles
+//       </p>
+//     `;
+
+// 		if (trip.seats_left === 0) {
+// 			const full = document.createElement('span');
+// 			full.className = 'full';
+// 			full.textContent = 'Complet';
+// 			card.appendChild(full);
+// 		} else {
+// 			const input = document.createElement('input');
+// 			input.type = 'text';
+// 			input.placeholder = 'Ton pseudo';
+// 			input.className = 'pseudo-input';
+
+// 			const button = document.createElement('button');
+// 			button.textContent = 'Réserver';
+
+// 			card.appendChild(input);
+// 			card.appendChild(button);
+
+// 			button.addEventListener('click', () => {
+// 				const pseudo = input.value.trim();
+
+// 				if (!pseudo) {
+// 					alert('Merci d’entrer un pseudo');
+// 					return;
+// 				}
+
+// 				fetch(API_URL, {
+// 					method: 'POST',
+// 					body: JSON.stringify({
+// 						action: 'reserve',
+// 						trip_id: trip.id,
+// 						pseudo: pseudo
+// 					})
+// 				})
+// 					.then(res => res.json())
+// 					.then(data => {
+// 						if (data.success) {
+// 							alert(`${pseudo} a réservé une place !`);
+
+// 							// --- Mise à jour visuelle ---
+// 							const seatsSpan = card.querySelector('.seats-left');
+// 							let seatsLeft = Number(seatsSpan.textContent);
+// 							seatsLeft = seatsLeft - 1;
+// 							seatsSpan.textContent = seatsLeft;
+
+// 							if (seatsLeft === 0) {
+// 								// Remplace input + bouton par "Complet"
+// 								input.remove();
+// 								button.remove();
+// 								const full = document.createElement('span');
+// 								full.className = 'full';
+// 								full.textContent = 'Complet';
+// 								card.appendChild(full);
+// 							}
+
+// 						} else {
+// 							alert('Erreur : ' + data.error);
+// 						}
+// 					})
+// 					.catch(err => {
+// 						console.error(err);
+// 						alert('Erreur lors de la réservation');
+// 					});
+// 			});
+// 		}
+
+// 		container.appendChild(card);
+// 	});
+// }
+
+// console.log('RSVP script chargé');
+
+// fetch(API_URL)
+// 	.then(res => res.json())
+// 	.then(data => {
+// 		console.log('DATA:', data);
+// 		const trips = Array.isArray(data) ? data : data.result;
+// 		renderTrips(trips);
+// 	})
+// 	.catch(err => console.error('Erreur récupération trajets', err));
 
