@@ -18,10 +18,10 @@ function renderTrips(trips) {
 
 		// Affiche le pseudo déjà réservé s'il existe
 		if (trip.pseudo && trip.pseudo.trim() !== "") {
-			const pseudoSpan = document.createElement('p');
-			pseudoSpan.textContent = `Réservé par : ${trip.pseudo}`;
-			card.appendChild(pseudoSpan);
-		}
+		const pseudoSpan = document.createElement('p');
+		pseudoSpan.textContent = `Réservé par : ${trip.pseudo}`;
+		card.appendChild(pseudoSpan);
+	}
 
 		if (trip.seats_left === 0) {
 			const full = document.createElement('span');
@@ -51,9 +51,9 @@ function renderTrips(trips) {
 				fetch(API_URL, {
 					method: 'POST',
 					body: JSON.stringify({
-						action: 'reserve',
-						trip_id: trip.id,
-						pseudo: pseudo
+					action: 'reserve',
+					trip_id: trip.id,
+					pseudo: pseudo
 					})
 				})
 					.then(res => res.json())

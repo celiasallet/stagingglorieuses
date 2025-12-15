@@ -1,4 +1,4 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycbxY2_7kuMrdNJ7xNKzA1sdDWhfBm_xBBwzEYASmditw-IkzgV5p5E3wPbeAZJDRYh7L/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxzOTh0DY9594hPsmxGtAqDWYPgl7gTqVD9jrxSzuxZjthGQ5sWHzbwe2HorJR923ZD/exec';
 
 const tripForm = document.getElementById('trip-form');
 
