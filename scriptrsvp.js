@@ -18,7 +18,7 @@ function renderTrips(trips) {
       full.className = 'full';
       full.textContent = 'Complet';
       card.appendChild(full);
-    } else {
+    } else { 
       const input = document.createElement('input');
       input.type = 'text';
       input.placeholder = 'Ton pseudo';

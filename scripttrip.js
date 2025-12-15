@@ -4,7 +4,7 @@ const tripForm = document.getElementById('trip-form');
 
 tripForm.addEventListener('submit', function (e) {
     e.preventDefault();
-
+ 
     const tripData = {
         driver: document.getElementById('driver').value,
         departure: document.getElementById('departure').value,    
