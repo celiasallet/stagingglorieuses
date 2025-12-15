@@ -30,31 +30,47 @@ function renderTrips(trips) {
       card.appendChild(input);
       card.appendChild(button);
 
-      button.addEventListener('click', () => {
-        const pseudo = input.value.trim();
-        if (!pseudo) {
-          alert('Merci d’entrer un pseudo');
-          return;
-        }
+	button.addEventListener('click', () => {
+	const pseudo = input.value.trim();
+	if (!pseudo) {
+		alert('Merci d’entrer un pseudo');
+		return;
+	}
 
-        fetch(API_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            action: 'reserve',
-            trip_id: trip.id,
-            pseudo: pseudo
-          })
-        })
-        .then(res => res.json())
-        .then(data => {
-          console.log('Réponse API:', data);
-          alert(`${pseudo} a réservé une place (API)`);
-        })
-        .catch(err => {
-          console.error(err);
-          alert('Erreur lors de la réservation');
-        });
-      });
+	fetch(API_URL, {
+		method: 'POST',
+		body: JSON.stringify({
+		action: 'reserve',
+		trip_id: trip.id,
+		pseudo: pseudo
+		})
+	})
+	.then(res => res.json())
+	.then(data => {
+		console.log('Réponse API:', data);
+		if(data.success){
+		alert(`${pseudo} a réservé une place`);
+		// Optionnel : décrémente directement le front
+		const seatsLeftSpan = card.querySelector('.seats-left');
+		seatsLeftSpan.textContent = Number(seatsLeftSpan.textContent) - 1;
+		if(Number(seatsLeftSpan.textContent) === 0){
+			// On peut cacher l'input + bouton et afficher "Complet"
+			input.remove();
+			button.remove();
+			const full = document.createElement('span');
+			full.className = 'full';
+			full.textContent = 'Complet';
+			card.appendChild(full);
+		}
+		} else {
+		alert('Erreur : ' + data.error);
+		}
+	})
+	.catch(err => {
+		console.error(err);
+		alert('Erreur lors de la réservation');
+	});
+	});
     }
 
     container.appendChild(card);
