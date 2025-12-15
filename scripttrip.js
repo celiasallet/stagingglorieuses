@@ -2,7 +2,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxY2_7kuMrdNJ7xNKzA1sdD
 
 const tripForm = document.getElementById('trip-form');
 
-form.addEventListener('submit', function (e) {
+tripForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const tripData = {
@@ -19,7 +19,7 @@ form.addEventListener('submit', function (e) {
     .then(data => {
         if (data.success) {
             alert('Trajet ajouté 🚗');
-            form.reset();
+            tripForm.reset();
         } else {
             alert('Erreur : ' + data.error);
         }
