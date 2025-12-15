@@ -53,15 +53,34 @@ function renderTrips(trips) {
 				})
 					.then(res => res.json())
 					.then(data => {
-						console.log('Réponse API:', data);
-						alert(`${pseudo} a réservé une place (API)`);
+						if (data.success) {
+							alert(`${pseudo} a réservé une place !`);
+
+							// --- Mise à jour visuelle ---
+							const seatsSpan = card.querySelector('.seats-left');
+							let seatsLeft = Number(seatsSpan.textContent);
+							seatsLeft = seatsLeft - 1;
+							seatsSpan.textContent = seatsLeft;
+
+							if (seatsLeft === 0) {
+								// Remplace input + bouton par "Complet"
+								input.remove();
+								button.remove();
+								const full = document.createElement('span');
+								full.className = 'full';
+								full.textContent = 'Complet';
+								card.appendChild(full);
+							}
+
+						} else {
+							alert('Erreur : ' + data.error);
+						}
 					})
 					.catch(err => {
 						console.error(err);
 						alert('Erreur lors de la réservation');
 					});
 			});
-
 		}
 
 		container.appendChild(card);
@@ -78,3 +97,4 @@ fetch(API_URL)
 		renderTrips(trips);
 	})
 	.catch(err => console.error('Erreur récupération trajets', err));
+

@@ -7,8 +7,9 @@ tripForm.addEventListener('submit', function (e) {
 
     const tripData = {
         driver: document.getElementById('driver').value,
-        departure: document.getElementById('departure').value,
-        seats_total: document.getElementById('trip-seats').value
+        departure: document.getElementById('departure').value,    
+        seats_total: parseInt(document.getElementById('trip-seats').value, 10), 
+        seats_left: parseInt(document.getElementById('trip-seats').value, 10) 
     };
 
     fetch(API_URL, {
