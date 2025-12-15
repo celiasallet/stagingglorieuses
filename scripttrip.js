@@ -1,6 +1,6 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbxY2_7kuMrdNJ7xNKzA1sdDWhfBm_xBBwzEYASmditw-IkzgV5p5E3wPbeAZJDRYh7L/exec';
 
-const form = document.getElementById('trip-form');
+const tripForm = document.getElementById('trip-form');
 
 form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -29,3 +29,8 @@ form.addEventListener('submit', function (e) {
         console.error(err);
     });
 });
+
+
+///////////////////////////
+
+
