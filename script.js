@@ -66,8 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(res => res.json())
       .then(data => {
         if(data.success){
-          showPopupInCard(tripForm.parentElement, 'Trajet proposé avec succès !');
-          tripForm.reset();
+           showPopupInCard(form.parentElement, "Merci de ta réponse, c'est noté !");
+
+            const btn = form.querySelector('button[type="submit"]');
+            btn.textContent = "C'est noté !";
+            btn.disabled = true;
+            tripForm.reset();
         } else {
           showPopupInCard(tripForm.parentElement, 'Erreur : ' + data.error);
         }
@@ -117,7 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
           .then(res => res.json())
           .then(data => {
             if(data.success){
-              showPopupInCard(card, `${pseudo} a réservé une place`);
+               showPopupInCard(form.parentElement, "Merci de ta réponse, c'est noté !");
+                const btn = form.querySelector('button[type="submit"]');
+                btn.textContent = "C'est noté !";
+                btn.disabled = true;
               const seatsLeftSpan = card.querySelector('.seats-left');
               seatsLeftSpan.textContent = Number(seatsLeftSpan.textContent) - 1;
               if(Number(seatsLeftSpan.textContent) === 0){
