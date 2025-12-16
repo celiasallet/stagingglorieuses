@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     trips.forEach(trip => {
   
+   
     const card = document.createElement('div');
     card.className = 'trip-card';
 

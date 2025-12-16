@@ -208,9 +208,12 @@ hr {
     border: solid 1px black;
 
 }
+.trip-card {
+  position: relative; /* permet au popup d'être positionné par rapport à la carte */
+}
 .thankyou-popup {
     display: none;
-    position: fixed;
+    position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     justify-content: center;
     align-items: center;
