@@ -209,7 +209,7 @@ hr {
 
 }
 .trip-card {
-  position: relative; /* permet au popup d'être positionné par rapport à la carte */
+  position: relative;
 }
 .thankyou-popup {
     display: none;
