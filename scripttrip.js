@@ -1,9 +1,9 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbwZplUjWy7PPpjn-cPRwstji_0L2mPQeotLi5Zl8ZSzAWV9_D5h7Bc7hea9Ea6Bw7q3/exec';
 
 const tripForm = document.getElementById('trip-form');
-
-tripForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+if (tripForm) {
+    tripForm.addEventListener('submit', function(e) {
+        e.preventDefault();
  
     const tripData = {
         driver: document.getElementById('driver').value,
@@ -31,6 +31,6 @@ tripForm.addEventListener('submit', function (e) {
     });
 });
 
-
+}
 /////////////
 
