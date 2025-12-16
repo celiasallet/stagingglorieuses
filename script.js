@@ -1,17 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM READY');
 
-  ////////////////////
+  //////////////////// popup
+function showPopupInCard(card, message) {
+  const popup = card.querySelector('.thankyou-popup');
+  if (!popup) return;
+
+  // change le texte
+  popup.querySelector('.popup-message').textContent = message;
+
+  popup.style.display = 'flex';
+
+  // ajoute les listeners une seule fois
+  if (!popup.dataset.listenersAdded) {
+    const closeBtn = popup.querySelector('.close-btn');
+    closeBtn.addEventListener('click', () => popup.style.display = 'none');
+    popup.addEventListener('click', e => { if(e.target === popup) popup.style.display = 'none'; });
+    popup.dataset.listenersAdded = 'true';
+  }
+}
+
+
   // RSVP Form & popup
   const form = document.getElementById('rsvp-form');
-  const popup = document.getElementById('thankyou-popup');
+  const rsvpop = document.getElementById('thankyou-popup');
 
-  if (form && popup) {
-    const closeBtn = popup.querySelector('.close-btn');
+  if (form && rsvpop) {
+    const closeBtn = rsvpop.querySelector('.close-btn');
 
     form.addEventListener('submit', function(e) {
       e.preventDefault(); // bloque le reload
-      popup.style.display = 'flex';
+      rsvpop.style.display = 'flex';
 
       const btn = form.querySelector('button[type="submit"]');
       btn.textContent = "C'est noté !";
@@ -21,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
       form.submit(); 
     });
 
-    closeBtn.addEventListener('click', () => popup.style.display = 'none');
-    popup.addEventListener('click', e => { if (e.target === popup) popup.style.display = 'none'; });
+    closeBtn.addEventListener('click', () => rsvpop.style.display = 'none');
+    rsvpop.addEventListener('click', e => { if (e.target === rsvpop) rsvpop.style.display = 'none'; });
   }
 
   ////////////////////
@@ -49,11 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(res => res.json())
       .then(data => {
         if(data.success){
-          alert('Trajet ajouté 🚗');
-          tripForm.reset();
-        } else {
-          alert('Erreur : ' + data.error);
-        }
+            showPopupInCard(tripForm.parentElement, 'Trajet proposé avec succès !');
+            tripForm.reset();
+            } else {
+            showPopupInCard(tripForm.parentElement, 'Erreur : ' + data.error);
+            }
+
       })
       .catch(err => {
         console.error(err);
@@ -99,20 +119,22 @@ document.addEventListener('DOMContentLoaded', () => {
           })
           .then(res => res.json())
           .then(data => {
-            if(data.success){
-              alert(`${pseudo} a réservé une place`);
-              const seatsLeftSpan = card.querySelector('.seats-left');
-              seatsLeftSpan.textContent = Number(seatsLeftSpan.textContent) - 1;
-              if(Number(seatsLeftSpan.textContent) === 0){
-                input.remove();
-                button.remove();
-                const full = document.createElement('span');
-                full.className = 'full';
-                full.textContent = 'Complet';
-                card.appendChild(full);
-              }
-            } else alert('Erreur : ' + data.error);
-          })
+                    if(data.success){
+        showPopupInCard(card, `${pseudo} a réservé une place`);
+        const seatsLeftSpan = card.querySelector('.seats-left');
+        seatsLeftSpan.textContent = Number(seatsLeftSpan.textContent) - 1;
+        if(Number(seatsLeftSpan.textContent) === 0){
+            input.remove();
+            button.remove();
+            const full = document.createElement('span');
+            full.className = 'full';
+            full.textContent = 'Complet';
+            card.appendChild(full);
+        }
+        } else {
+        showPopupInCard(card, 'Erreur : ' + data.error);
+        }
+        })
           .catch(err => { console.error(err); alert('Erreur lors de la réservation'); });
         });
 
