@@ -66,9 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(res => res.json())
       .then(data => {
         if(data.success){
-           showPopupInCard(form.parentElement, "Merci de ta réponse, c'est noté !");
+           showPopupInCard(tripForm.parentElement, "Merci de ta réponse, c'est noté !");
 
-            const btn2 = tripForm.querySelector('button[type="submit"]');
+            const btn2 = form.querySelector('button[type="submit"]');
             btn2.textContent = "C'est noté !";
             btn2.disabled = true;
 
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
           .then(data => {
             if(data.success){
                showPopupInCard(form.parentElement, "Merci de ta réponse, c'est noté !");
-                const btn2 = container.querySelector('button[type="submit"]');
+                const btn2 = form.querySelector('button[type="submit"]');
                     btn2.textContent = "C'est noté !";
                     btn2.disabled = true;
 
