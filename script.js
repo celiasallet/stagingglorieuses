@@ -2,29 +2,35 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM READY');
 
   //////////////////// popup
-    function showPopupInCard(card, message) {
-    const popup = card.querySelector('.thankyou-popup');
-    if (!popup) return;
-
-    // change le texte
-    popup.querySelector('.popup-content').lastChild.textContent = message;
+  function showPopupInCard(card, message) {
+    // crée le popup dynamiquement
+    const popup = document.createElement('div');
+    popup.className = 'thankyou-popup';
+    popup.innerHTML = `
+      <div class="popup-content">
+        <span class="close-btn">&times;</span>
+        <p class="popup-message">${message}</p>
+      </div>
+    `;
+    card.appendChild(popup);
 
     popup.style.display = 'flex';
 
+    // ferme au click sur le bouton ou en dehors
     const closeBtn = popup.querySelector('.close-btn');
-    closeBtn.addEventListener('click', () => popup.style.display = 'none');
-    popup.addEventListener('click', e => { if(e.target === popup) popup.style.display = 'none'; });
-    }
-  // RSVP Form & popup
+    closeBtn.addEventListener('click', () => popup.remove());
+    popup.addEventListener('click', e => { if(e.target === popup) popup.remove(); });
+  }
+
+  ////////////////////
+  // RSVP Form
   const form = document.getElementById('rsvp-form');
-  const popup = document.getElementById('thankyou-popup');
-
-  if (form && popup) {
-    const closeBtn = popup.querySelector('.close-btn');
-
+  if (form) {
     form.addEventListener('submit', function(e) {
       e.preventDefault(); // bloque le reload
-      popup.style.display = 'flex';
+
+      // message spécifique pour le RSVP
+      showPopupInCard(form.parentElement, "Merci de ta réponse, c'est noté !");
 
       const btn = form.querySelector('button[type="submit"]');
       btn.textContent = "C'est noté !";
@@ -33,9 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // envoi Google Forms via iframe
       form.submit(); 
     });
-
-    closeBtn.addEventListener('click', () => popup.style.display = 'none');
-    popup.addEventListener('click', e => { if (e.target === popup) popup.style.display = 'none'; });
   }
 
   ////////////////////
@@ -45,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (tripForm) {
     tripForm.addEventListener('submit', e => {
-      e.preventDefault(); // bloque le reload
+      e.preventDefault();
       console.log('Trip form submitted');
 
       const tripData = {
@@ -62,12 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(res => res.json())
       .then(data => {
         if(data.success){
-            showPopupInCard(tripForm.parentElement, 'Trajet proposé avec succès !');
-            tripForm.reset();
-            } else {
-            showPopupInCard(tripForm.parentElement, 'Erreur : ' + data.error);
-            }
-
+          showPopupInCard(tripForm.parentElement, 'Trajet proposé avec succès !');
+          tripForm.reset();
+        } else {
+          showPopupInCard(tripForm.parentElement, 'Erreur : ' + data.error);
+        }
       })
       .catch(err => {
         console.error(err);
@@ -113,22 +115,22 @@ document.addEventListener('DOMContentLoaded', () => {
           })
           .then(res => res.json())
           .then(data => {
-                    if(data.success){
-        showPopupInCard(card, `${pseudo} a réservé une place`);
-        const seatsLeftSpan = card.querySelector('.seats-left');
-        seatsLeftSpan.textContent = Number(seatsLeftSpan.textContent) - 1;
-        if(Number(seatsLeftSpan.textContent) === 0){
-            input.remove();
-            button.remove();
-            const full = document.createElement('span');
-            full.className = 'full';
-            full.textContent = 'Complet';
-            card.appendChild(full);
-        }
-        } else {
-        showPopupInCard(card, 'Erreur : ' + data.error);
-    }
-        })
+            if(data.success){
+              showPopupInCard(card, `${pseudo} a réservé une place`);
+              const seatsLeftSpan = card.querySelector('.seats-left');
+              seatsLeftSpan.textContent = Number(seatsLeftSpan.textContent) - 1;
+              if(Number(seatsLeftSpan.textContent) === 0){
+                input.remove();
+                button.remove();
+                const full = document.createElement('span');
+                full.className = 'full';
+                full.textContent = 'Complet';
+                card.appendChild(full);
+              }
+            } else {
+              showPopupInCard(card, 'Erreur : ' + data.error);
+            }
+          })
           .catch(err => { console.error(err); alert('Erreur lors de la réservation'); });
         });
 
@@ -163,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(err => console.error('Erreur récupération trajets', err));
   }
-
 });
 
 
