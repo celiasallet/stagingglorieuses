@@ -34,9 +34,10 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbwZplUjWy7PPpjn-cPRwstj
 
 const tripForm = document.getElementById('trip-form');
 if (tripForm) {
-    tripForm.addEventListener('submit', function(e) {
-        e.preventDefault();
- 
+  tripForm.addEventListener('submit', function(e) {
+    console.log('SUBMIT TRIP FORM'); // 👈 AJOUTE ÇA
+    e.preventDefault();
+
     const tripData = {
         driver: document.getElementById('driver').value,
         departure: document.getElementById('departure').value,    
@@ -173,3 +174,4 @@ mainTrips.forEach(trip => {
 renderTrips(mainTrips);
   })
   .catch(err => console.error('Erreur récupération trajets', err));
+}
