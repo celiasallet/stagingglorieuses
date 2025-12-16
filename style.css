@@ -210,6 +210,7 @@ hr {
 }
 .trip-card {
   position: relative;
+  margin-top: 1.5rem;
 }
 .thankyou-popup {
     display: none;
@@ -244,11 +245,24 @@ hr {
 
 /* djopazodjpoajpdojaozdjopajzdpojaozdj */
 .trip-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+padding: clamp(1rem, -1.5rem + 8vw, 3rem) !important;
+
+  border-radius: 1.25rem;
+    backdrop-filter: blur(14px) saturate(120%);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    height: auto;
+    background: linear-gradient(
+        120deg,
+        hsla(160, 60%, 60%, 0.12),
+        hsla(0, 0%, 100%, 0.45) 55%
+    );
+
+    border: 1px solid hsla(160, 40%, 70%, 0.35);
+
+    box-shadow:
+        0 12px 32px rgba(20, 40, 60, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+
 }
 .full {
   color: red;
