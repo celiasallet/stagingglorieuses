@@ -2,35 +2,29 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM READY');
 
   //////////////////// popup
-function showPopupInCard(card, message) {
-  const popup = card.querySelector('.thankyou-popup');
-  if (!popup) return;
+    function showPopupInCard(card, message) {
+    const popup = card.querySelector('.thankyou-popup');
+    if (!popup) return;
 
-  // change le texte
-  popup.querySelector('.popup-message').textContent = message;
+    // change le texte
+    popup.querySelector('.popup-content').lastChild.textContent = message;
 
-  popup.style.display = 'flex';
+    popup.style.display = 'flex';
 
-  // ajoute les listeners une seule fois
-  if (!popup.dataset.listenersAdded) {
     const closeBtn = popup.querySelector('.close-btn');
     closeBtn.addEventListener('click', () => popup.style.display = 'none');
     popup.addEventListener('click', e => { if(e.target === popup) popup.style.display = 'none'; });
-    popup.dataset.listenersAdded = 'true';
-  }
-}
-
-
+    }
   // RSVP Form & popup
   const form = document.getElementById('rsvp-form');
-  const rsvpop = document.getElementById('thankyou-popup');
+  const popup = document.getElementById('thankyou-popup');
 
-  if (form && rsvpop) {
-    const closeBtn = rsvpop.querySelector('.close-btn');
+  if (form && popup) {
+    const closeBtn = popup.querySelector('.close-btn');
 
     form.addEventListener('submit', function(e) {
       e.preventDefault(); // bloque le reload
-      rsvpop.style.display = 'flex';
+      popup.style.display = 'flex';
 
       const btn = form.querySelector('button[type="submit"]');
       btn.textContent = "C'est noté !";
@@ -40,8 +34,8 @@ function showPopupInCard(card, message) {
       form.submit(); 
     });
 
-    closeBtn.addEventListener('click', () => rsvpop.style.display = 'none');
-    rsvpop.addEventListener('click', e => { if (e.target === rsvpop) rsvpop.style.display = 'none'; });
+    closeBtn.addEventListener('click', () => popup.style.display = 'none');
+    popup.addEventListener('click', e => { if (e.target === popup) popup.style.display = 'none'; });
   }
 
   ////////////////////
@@ -133,7 +127,7 @@ function showPopupInCard(card, message) {
         }
         } else {
         showPopupInCard(card, 'Erreur : ' + data.error);
-        }
+    }
         })
           .catch(err => { console.error(err); alert('Erreur lors de la réservation'); });
         });
