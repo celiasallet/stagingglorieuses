@@ -1,4 +1,5 @@
 // script de formulaire pour pop window
+alert('SCRIPT CHARGÉ');
 const form = document.getElementById('rsvp-form');
 const popup = document.getElementById('thankyou-popup');
 
