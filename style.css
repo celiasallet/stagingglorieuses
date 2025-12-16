@@ -208,7 +208,7 @@ hr {
     border: solid 1px black;
 
 }
-#thankyou-popup {
+.thankyou-popup {
     display: none;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -217,7 +217,7 @@ hr {
     z-index: 9999;
 }
     
-#thankyou-popup .popup-content {
+.thankyou-popup .popup-content {
     background: #fff;
     padding: 2rem 2.5rem;
     border-radius: 10px;
@@ -229,7 +229,7 @@ hr {
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
     
-#thankyou-popup .close-btn {
+.thankyou-popup .close-btn {
     position: absolute;
     top: 10px;
     right: 15px;

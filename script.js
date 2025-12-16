@@ -68,9 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if(data.success){
            showPopupInCard(form.parentElement, "Merci de ta réponse, c'est noté !");
 
-            const btn = form.querySelector('button[type="submit"]');
-            btn.textContent = "C'est noté !";
-            btn.disabled = true;
+            const btn2 = form.querySelector('button[type="submit"]');
+            btn2.textContent = "C'est noté !";
+            btn2.disabled = true;
+
             tripForm.reset();
         } else {
           showPopupInCard(tripForm.parentElement, 'Erreur : ' + data.error);
@@ -122,9 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
           .then(data => {
             if(data.success){
                showPopupInCard(form.parentElement, "Merci de ta réponse, c'est noté !");
-                const btn = form.querySelector('button[type="submit"]');
-                btn.textContent = "C'est noté !";
-                btn.disabled = true;
+                const btn2 = form.querySelector('button[type="submit"]');
+                    btn2.textContent = "C'est noté !";
+                    btn2.disabled = true;
+
               const seatsLeftSpan = card.querySelector('.seats-left');
               seatsLeftSpan.textContent = Number(seatsLeftSpan.textContent) - 1;
               if(Number(seatsLeftSpan.textContent) === 0){
