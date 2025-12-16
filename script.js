@@ -120,26 +120,31 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({action:'reserve', trip_id:trip.id, pseudo})
           })
           .then(res => res.json())
-          .then(data => {
+        .then(data => {
             if(data.success){
-    showPopupInCard(card, "Trajet réservé avec succès !");
-    button.textContent = "Merci !";
-    button.disabled = true;
+                // popup dans la carte du trajet
+                showPopupInCard(card, "Trajet réservé avec succès !");
 
-    const seatsLeftSpan = card.querySelector('.seats-left');
-    seatsLeftSpan.textContent = Number(seatsLeftSpan.textContent) - 1;
-    if(Number(seatsLeftSpan.textContent) === 0){
-        input.remove();
-        button.remove();
-        const full = document.createElement('span');
-        full.className = 'full';
-        full.textContent = 'Complet';
-        card.appendChild(full);
-    }
-} else {
-    showPopupInCard(card, 'Erreur : ' + data.error);
-}
-          })
+                // désactive le bouton sur lequel on a cliqué
+                button.textContent = "Merci !";
+                button.disabled = true;
+
+                // met à jour le nombre de places
+                const seatsLeftSpan = card.querySelector('.seats-left');
+                seatsLeftSpan.textContent = Number(seatsLeftSpan.textContent) - 1;
+                if(Number(seatsLeftSpan.textContent) === 0){
+                    input.remove();
+                    button.remove();
+                    const full = document.createElement('span');
+                    full.className = 'full';
+                    full.textContent = 'Complet';
+                    card.appendChild(full);
+                }
+            } else {
+                showPopupInCard(card, 'Erreur : ' + data.error);
+            }
+        })
+
           .catch(err => { console.error(err); alert('Erreur lors de la réservation'); });
         });
 
