@@ -69,6 +69,7 @@ if (tripForm) {
 
 function renderTrips(trips) {
   const container = document.getElementById('trips-container');
+    if (!container) return;
   container.innerHTML = '';
 
   trips.forEach(trip => {
@@ -151,9 +152,12 @@ function renderTrips(trips) {
 
 console.log('RSVP script chargé');
 
-fetch(API_URL) 
-  .then(res => res.json())
-  .then(data => {
+const tripsContainer = document.getElementById('trips-container');
+
+if (tripsContainer) {
+  fetch(API_URL)
+    .then(res => res.json())
+    .then(data => {
     // Filtre trajets principaux et réservations. changer jusqua render
     const tripsData = data.filter(row => !isNaN(Number(row.seats_total)) && !isNaN(Number(row.seats_left)));
 
