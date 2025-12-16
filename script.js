@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(data.success){
            showPopupInCard(tripForm.parentElement, "Merci de ta réponse, c'est noté !");
 
-            const btn2 = form.querySelector('button[type="submit"]');
+            const btn2 = tripForm.querySelector('button[type="submit"]');
             btn2.textContent = "C'est noté !";
             btn2.disabled = true;
 
