@@ -122,10 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
           .then(res => res.json())
           .then(data => {
             if(data.success){
-               showPopupInCard(form.parentElement, "Merci de ta réponse, c'est noté !");
-                const btn2 = form.querySelector('button[type="submit"]');
-                    btn2.textContent = "C'est noté !";
-                    btn2.disabled = true;
+               showPopupInCard(container, "Trajet réservé avec succès !");
+
+                const btn1 = container.querySelector('button[type="submit"]');
+                btn1.textContent = "C'est noté !";
+                btn1.disabled = true;
 
               const seatsLeftSpan = card.querySelector('.seats-left');
               seatsLeftSpan.textContent = Number(seatsLeftSpan.textContent) - 1;
