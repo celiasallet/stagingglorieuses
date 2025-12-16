@@ -92,9 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = '';
 
     trips.forEach(trip => {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'trip-card-wrapper';
-
+  
     const card = document.createElement('div');
     card.className = 'trip-card';
 
@@ -126,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             if(data.success){
                 // popup dans la carte du trajet
-                showPopupInCard(wrapper, "Trajet réservé avec succès !");
+                showPopupInCard(card, "Trajet réservé avec succès !");
 
                 // désactive le bouton sur lequel on a cliqué
                 button.textContent = "Merci !";
@@ -160,7 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
         card.appendChild(full);
       }
 
-      wrapper.appendChild(card);
       container.appendChild(card);
     });
   }
