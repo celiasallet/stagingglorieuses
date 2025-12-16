@@ -3,14 +3,18 @@ const form = document.getElementById('rsvp-form');
 const popup = document.getElementById('thankyou-popup');
 const closeBtn = popup.querySelector('.close-btn');
 
-    form.addEventListener('submit', function() {
-        e.preventDefault(); 
-        popup.style.display = "flex";
+    form.addEventListener('submit', function(e) {
+    e.preventDefault(); // OBLIGATOIRE
 
-        const btn = form.querySelector('button[type="submit"]');
-        btn.textContent = "C'est noté !";
-        btn.disabled = true;
-    });
+    popup.style.display = "flex";
+
+    const btn = form.querySelector('button[type="submit"]');
+    btn.textContent = "C'est noté !";
+    btn.disabled = true;
+
+    // On soumet quand même le formulaire vers Google Forms
+    form.submit();
+});
 
     closeBtn.addEventListener('click', function() {
         popup.style.display = "none";
