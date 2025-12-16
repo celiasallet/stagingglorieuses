@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const popup = document.createElement('div');
     popup.className = 'thankyou-popup';
     popup.innerHTML = `
+    
       <div class="popup-content">
         <span class="close-btn">&times;</span>
         <p class="popup-message">${message}</p>
