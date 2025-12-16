@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(res => res.json())
       .then(data => {
         if(data.success){
-           showPopupInCard(tripForm.parentElement, "Merci de ta réponse, c'est noté !");
+           showPopupInCard(tripForm, "Trajet proposé avec succès !");
 
             const btn2 = tripForm.querySelector('button[type="submit"]');
             btn2.textContent = "C'est noté !";
